@@ -179,10 +179,10 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 
 | Pozice | Typ modulu / komponenta                     | Přesné typové označení Teco           | Objednací číslo (Part No.) | Pokryté vstupy a výstupy (DI / DO / AI / PWM / relé) |
 | :----- | :------------------------------------------ | :------------------------------------ | :------------------------- | :--------------------------------------------------- |
-| **1**  | Spínaný napájecí zdroj 24 V DC na DIN lištu | `...` *(např. PS2-60/27)*             | `...`                      | Napájení centrály a senzorů 24 V DC                  |
-| **2**  | Centrální jednotka (CPU)                    | `...` *(např. CP-2007 nebo CP-2005)*  | `...`                      | `...`                                                |
-| **3**  | Rozšiřující modul 1 (sběrnice TCL2)         | `...` *(např. IB-1301)*               | `...`                      | `...`                                                |
-| **4**  | Rozšiřující modul 2 (sběrnice TCL2)         | `...` *(např. OS-1401)*               | `...`                      | `...`                                                |
+| **1**  | Spínaný napájecí zdroj 24 V DC na DIN lištu | `HDR-60-24` *(např. PS2-60/27)*             | `8020103607`                      | Napájení centrály a senzorů 24 V DC                  |
+| **2**  | Centrální jednotka (CPU)                    | `CP-2061` *(např. CP-2007 nebo CP-2005)*  | `TXN 120 61.02NNNN`                      | ``                                                |
+| **3**  | Rozšiřující modul 1 (sběrnice TCL2)         | `IT-1605` *(např. IB-1301)*               | `TXN 116 05`                      | `...`                                                |
+| **4**  | Rozšiřující modul 2 (sběrnice TCL2)         | `OT-1651` *(např. OS-1401)*               | `TXN 116 51`                      | `...`                                                |
 | **5**  | Případný další submodul / zakončení         | `...` *(např. zakončovací člen TCL2)* | `...`                      | `...`                                                |
 
 2. **Vyhodnocení I/O bilance a projektové rezervy:**
