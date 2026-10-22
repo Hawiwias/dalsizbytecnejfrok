@@ -43,16 +43,16 @@ Programovatelné automaty (PLC)
 
 2. **PLC vs. Embedded PLC a další řídicí jednotky:**
    - Jaký je zásadní rozdíl mezi standardním průmyslovým PLC v krabičce na DIN lištu a tzv. **Embedded PLC**? Co obecně vyjadřuje pojem *embedded* a v jakých dalších typech zařízení se s ním setkáváme?
-     - *Vaše vysvětlení:* `...`
+     - *Vaše vysvětlení:* `Zásadní rozdíl spočívá především v konstrukci a způsobu použití. Standardní průmyslové PLC v krabičce na DIN lištu je samostatný, univerzálně použitelný řídicí automat, který se montuje do rozvaděče a připojuje k dalším zařízením. Embedded PLC je řídicí systém vestavěný přímo do jiného zařízení nebo stroje, případně navržený jako součást jeho elektroniky. Často má kompaktnější konstrukci a je přizpůsoben konkrétní aplikaci. Pojem embedded znamená vestavěný. V automobilech, domácích spotřebičích (pračka, mikrovlnná trouba), tiskárnách, chytrých hodinkách, routerech`
 
    - Doplňte do přehledové tabulky význam zkratek a oblast jejich nasazení:
 
 | Zkratka      | Co zkratka znamená (anglicky / česky) | Pro jakou oblast řízení se primárně využívá                        | Typický operační / řídicí systém                 |
 | :----------- | :------------------------------------ | :----------------------------------------------------------------- | :----------------------------------------------- |
 | **iPC**      | Industrial PC / Průmyslové PC         | Vizualizace SCADA, řízení rozsáhlých technologických uzlů, SoftPLC | Průmyslový OS (Windows IoT Enterprise, Linux RT) |
-| **NC / CNC** | `...`                                 | `...`                                                              | `...`                                            |
-| **MCU**      | `...`                                 | `...`                                                              | `...` *(bare-metal bez OS nebo RTOS)*            |
-| **SoC**      | System on a chip                      | `...`                                                              | `...`                                            |
+| **NC / CNC** | `Numerical Control / Computer Numerical Control – číselné / počítačové číslicové řízení`                                 | `Řízení obráběcích strojů, souřadnicových os, frézování, soustružení a přesných pohybů`                                                              | `Specializovaný CNC systém, průmyslový počítač, případně Windows nebo Linux RT`                                            |
+| **MCU**      | `Microcontroller Unit / Mikrokontrolér`                                 | `Vestavěné řízení jednoduchých zařízení, snímání senzorů, regulace a řízení motorů`                                                              | `Bare-metal (bez OS) nebo RTOS (operační systém reálného času)` *(bare-metal bez OS nebo RTOS)*            |
+| **SoC**      | System on a chip                      | `Integrace procesoru, paměti a periferií do jednoho čipu; řízení komplexních vestavěných zařízení, IoT a zpracování dat`                                                              | `Embedded Linux, Android, případně RTOS nebo bare-metal`                                            |
 
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **PLC (Programmable Logic Controller):** Průmyslový mikropočítačový systém určený pro deterministické řízení technologických procesů v reálném čase. Vyznačuje se vysokou odolností proti rušení, modulární koncepcí a cyklickým vykonáváním programu.
