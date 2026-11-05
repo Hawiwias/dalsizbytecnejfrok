@@ -193,7 +193,7 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 | **Digitální vstupy (DI)** | 23 | `26` | `3` | `11,54%` |
 | **Analogové vstupy (AI: 4–20mA, PT)** | 7 | `14` | `7` | `50%` |
 | **Tranzistorové výstupy (DO tranzistor + PWM)** | 6 (4 PWM + 2 DO) | `12` | `6` | `50%` |
-| **Reléové výstupy (DO relé 230 V)** | 3 | `11` | `8` | `72,73% %` |
+| **Reléové výstupy (DO relé 230 V)** | 3 | `11` | `8` | `72,73%` |
 
 3. **Proudová bilance a dimenzování napájecího zdroje 24 V DC:**
    - Vypočtěte proudovou spotřebu sestavy na hladině 24 V DC:
@@ -254,10 +254,10 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
 | Signalizační prvek na PLC | Stav (barva / svit)     | Provozní význam (co stav znamená pro servisního technika)   |
 | :------------------------ | :---------------------- | :---------------------------------------------------------- |
 | **RUN**                   | Zelená, trvale svítí    | Uživatelský program v PLC běží v normálním cyklickém režimu |
-| **HALT / STOP**           | Žlutá / oranžová, svítí | `...`                                                       |
-| **ERR / FAULT**           | Červená, bliká          | `...`                                                       |
-| **ERR / FAULT**           | Červená, trvale svítí   | `...`                                                       |
-| **ETH (Link/Act)**        | Zelená/žlutá, bliká     | `...`                                                       |
+| **HALT / STOP**           | Žlutá / oranžová, svítí | `Procesor nachází v režimu zastavení (STOP) a nevykonává uživatelský program (řízení je zastaveno).`                                                       |
+| **ERR / FAULT**           | Červená, bliká          | `Řídicí jednotka nachází v chybovém režimu (STOP) a zastavila zpracování programu.`                                                       |
+| **ERR / FAULT**           | Červená, trvale svítí   | `Vyskytla se vážná chyba, kvůli které procesor zastavil vykonávání programu. PLC je nyní v ochranném režimu a řízená technologie stojí.`                                                       |
+| **ETH (Link/Act)**        | Zelená/žlutá, bliká     | `Standardní chování síťové karty a obvykle znamená, že port je aktivní a právě probíhá přenos dat.`                                                       |
 
 2. **Troubleshooting v elektrickém zapojení pomocí digitálního multimetru:**
    - Upevněte na DIN lištu PLC a podle parametrů (viz technický list) vyberte vhodný zdroj napájení.
