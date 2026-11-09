@@ -264,7 +264,16 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
    - Zapojte napájení PLC (než zapojíte 230 V AC zapojení proměřte).
    - Popište přesný a bezpečný metodický postup (kam připojíte měřicí hroty, jaký rozsah a veličinu na multimetru nastavíte; alespoň některé varianty bezpečně nasimulovat na PLC a zdroji, nejspíš budete potřebovat navázat komunikaci s programovacím prostředím, založit program a HW konfiguraci, abyste mohli ovládat výstupy a číst vstupy):
      - **A. Detekce tvrdého zkratu mezi svorkami +24 V DC a 0 V (GND) před zapnutím jističe:**
-       - *Postup:* `...` *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
+       - *Postup:* `Vypneme hlavní vypínač a jistič napájecího obvodu.
+       - Zajistíme zařízení proti nechtěnému zapnutí.
+       - Ověříme nepřítomnost napětí vhodným měřicím přístrojem.
+       - Multimetr přepneme na měření odporu (Ω), případně akustickou zkoušku kontinuity.
+       - Černý měřicí hrot připojíme na svorku 0 V (GND).
+       - Červený hrot připojíme na svorku +24 V DC.
+       - Vyhodnotíme naměřenou hodnotu:
+       - Přibližně 0 Ω – podezření na tvrdý zkrat.
+       - Nízký odpor – možný zkrat nebo připojená zátěž.
+       - Vysoký odpor – pravděpodobně bez tvrdého zkratu.` *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
      - **B. Ověření spečených kontaktů výstupního relé DO při vypnutém napájení řízení:**
        - *Postup:* `...`
      - **C. Diagnostika napájecího zdroje a napájení PLC (ověření správného napětí 24 V DC):**
