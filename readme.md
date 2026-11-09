@@ -125,7 +125,7 @@ Prostudujte vnitřní blokové uspořádání programovatelného automatu na ní
 
 | Název sběrnice                         | Typická fyzická vrstva / kabeláž                        | K čemu sběrnice slouží                                | Maximální dosah / zakončení (terminace)                      |
 | :------------------------------------- | :------------------------------------------------------ | :---------------------------------------------------- | :----------------------------------------------------------- |
-| **TCL2** *(Teco Communication Line 2)* | RS-485, stíněný kroucený pár (např. kabel SYKFY, PCEHY) | Připojení rychlých periferních modulů na DIN lištu    | Až stovek metrů; na obou koncích zakončovací odpor cca 120 Ω |
+| **TCL2** *(Teco Communication Line 2)* | RS-485, stíněný kroucený pár (např. kabel SYKFY, PCEHY) | Připojení rychlých periferních modulů na DIN lištu    | Až stovek metrů; na obou koncích zakončovací odpor cca 120  |
 | **CIB** *(Common Installation Bus)*    | `...`                                                   | `...`                                                 | `...`                                                        |
 | **Ethernet (ETH)**                     | 100Base-TX, konektor RJ45 (kabel UTP/STP Cat 5e/6)      | `...` *(programování Mosaic, Web server, Modbus TCP)* | Max. 100 m na segment                                        |
 
@@ -140,7 +140,7 @@ Prostudujte vnitřní blokové uspořádání programovatelného automatu na ní
 
 <details>
 <summary> :bulb: Tip k napájení a sběrnicím: </summary>
-<p>U sběrnice CIB jsou periferní senzory a aktory (např. nástěnné ovladače, pohybová čidla PIR, stmívače) napájeny přímo stejnosměrným napětím ze sběrnice, což dramaticky snižuje množství kabeláže v objektu. Naopak sběrnice TCL2 je striktně určena pro rychlý přenos I/O dat mezi moduly v rozváděči a vyžaduje správné impedanční zakončení 120 Ω.</p>
+<p>U sběrnice CIB jsou periferní senzory a aktory (např. nástěnné ovladače, pohybová čidla PIR, stmívače) napájeny přímo stejnosměrným napětím ze sběrnice, což dramaticky snižuje množství kabeláže v objektu. Naopak sběrnice TCL2 je striktně určena pro rychlý přenos I/O dat mezi moduly v rozváděči a vyžaduje správné impedanční zakončení 120 .</p>
 </details>
 
 :star2: **Bonusová otázka k úloze 2:**
@@ -264,16 +264,18 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
    - Zapojte napájení PLC (než zapojíte 230 V AC zapojení proměřte).
    - Popište přesný a bezpečný metodický postup (kam připojíte měřicí hroty, jaký rozsah a veličinu na multimetru nastavíte; alespoň některé varianty bezpečně nasimulovat na PLC a zdroji, nejspíš budete potřebovat navázat komunikaci s programovacím prostředím, založit program a HW konfiguraci, abyste mohli ovládat výstupy a číst vstupy):
      - **A. Detekce tvrdého zkratu mezi svorkami +24 V DC a 0 V (GND) před zapnutím jističe:**
+       
        - *Postup:* `Vypneme hlavní vypínač a jistič napájecího obvodu.
        - Zajistíme zařízení proti nechtěnému zapnutí.
        - Ověříme nepřítomnost napětí vhodným měřicím přístrojem.
-       - Multimetr přepneme na měření odporu (Ω), případně akustickou zkoušku kontinuity.
+       - Multimetr přepneme na měření odporu (), případně akustickou zkoušku kontinuity.
        - Černý měřicí hrot připojíme na svorku 0 V (GND).
        - Červený hrot připojíme na svorku +24 V DC.
        - Vyhodnotíme naměřenou hodnotu:
-       - Přibližně 0 Ω – podezření na tvrdý zkrat.
+       - Přibližně 0  – podezření na tvrdý zkrat.
        - Nízký odpor – možný zkrat nebo připojená zátěž.
        - Vysoký odpor – pravděpodobně bez tvrdého zkratu.` *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
+     
      - **B. Ověření spečených kontaktů výstupního relé DO při vypnutém napájení řízení:**
        - *Postup:* `...`
      - **C. Diagnostika napájecího zdroje a napájení PLC (ověření správného napětí 24 V DC):**
@@ -309,7 +311,7 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
 
 <details>
 <summary> :bulb: Tip pro měření proudové smyčky 4–20 mA: </summary>
-<p>Pamatujte, že proud se měří <strong>v sérii</strong> s obvodem (musíte rozpojit svorku a multimetr zapojit jako ampérmetr do cesty proudu), zatímco napětí se měří <strong>paralelně</strong>. Pokud má PLC interní bočník (např. 250 Ω nebo 500 Ω), lze proud měřit nepřímo jako úbytek napětí na tomto odporu bez nutnosti rozpojovat vodiče (dle Ohmova zákona).</p>
+<p>Pamatujte, že proud se měří <strong>v sérii</strong> s obvodem (musíte rozpojit svorku a multimetr zapojit jako ampérmetr do cesty proudu), zatímco napětí se měří <strong>paralelně</strong>. Pokud má PLC interní bočník (např. 250  nebo 500 ), lze proud měřit nepřímo jako úbytek napětí na tomto odporu bez nutnosti rozpojovat vodiče (dle Ohmova zákona).</p>
 </details>
 
 :star2: **Bonusová otázka k úloze 4:**
