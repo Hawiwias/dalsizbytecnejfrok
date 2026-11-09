@@ -265,7 +265,7 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
    - Popište přesný a bezpečný metodický postup (kam připojíte měřicí hroty, jaký rozsah a veličinu na multimetru nastavíte; alespoň některé varianty bezpečně nasimulovat na PLC a zdroji, nejspíš budete potřebovat navázat komunikaci s programovacím prostředím, založit program a HW konfiguraci, abyste mohli ovládat výstupy a číst vstupy):
      - **A. Detekce tvrdého zkratu mezi svorkami +24 V DC a 0 V (GND) před zapnutím jističe:**
        
-       - *Postup:* `Vypneme hlavní vypínač a jistič napájecího obvodu.
+       - *Postup:* Vypneme hlavní vypínač a jistič napájecího obvodu.
        - Zajistíme zařízení proti nechtěnému zapnutí.
        - Ověříme nepřítomnost napětí vhodným měřicím přístrojem.
        - Multimetr přepneme na měření odporu (), případně akustickou zkoušku kontinuity.
@@ -274,10 +274,20 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
        - Vyhodnotíme naměřenou hodnotu:
        - Přibližně 0  – podezření na tvrdý zkrat.
        - Nízký odpor – možný zkrat nebo připojená zátěž.
-       - Vysoký odpor – pravděpodobně bez tvrdého zkratu.` *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
+       - Vysoký odpor – pravděpodobně bez tvrdého zkratu. *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
      
      - **B. Ověření spečených kontaktů výstupního relé DO při vypnutém napájení řízení:**
-       - *Postup:* `...`
+       - *Postup:* Vypneme a zajistíme napájení celého testovaného obvodu.
+       - Ověříme nepřítomnost napětí na kontaktech.
+       - Multimetr nastavíme na měření odporu (Ω) nebo akustickou zkoušku kontinuity.
+       - Identifikujeme svorky relé podle dokumentace PLC:
+       - COM – společný kontakt.
+       - NO – normálně rozepnutý kontakt.
+       - NC – normálně sepnutý kontakt.
+       - Změříme odpor mezi COM a NO.
+       - Při rozepnutém relé očekáváme přerušený obvod (OL nebo velmi vysoký odpor).
+       - Pokud je mezi COM a NO naměřen téměř nulový odpor, může jít o svařené kontakty.
+       - 
      - **C. Diagnostika napájecího zdroje a napájení PLC (ověření správného napětí 24 V DC):**
 	   - *Postup:* `...` *(zařízení pod napětím, měření stejnosměrného napětí – hroty na svorkách zdroje / PLC napájení +24 V a 0 V, vhodný rozsah DC napětí, kontrola ripple/stability)*
 	- **D. Diagnostika vstupů a výstupů PLC (ověření napětí / kontinuity na DI/DO):**
