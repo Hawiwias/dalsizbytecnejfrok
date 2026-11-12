@@ -271,7 +271,7 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
        - Multimetr přepneme na měření odporu (), případně akustickou zkoušku kontinuity.
        - Černý měřicí hrot připojíme na svorku 0 V (GND).
        - Červený hrot připojíme na svorku +24 V DC.
-       - Vyhodnotíme naměřenou hodnotu:
+       - **Vyhodnotíme naměřenou hodnotu:**
        - Přibližně 0  – podezření na tvrdý zkrat.
        - Nízký odpor – možný zkrat nebo připojená zátěž.
        - Vysoký odpor – pravděpodobně bez tvrdého zkratu. *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
@@ -280,7 +280,7 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
        - *Postup:* Vypneme a zajistíme napájení celého testovaného obvodu.
        - Ověříme nepřítomnost napětí na kontaktech.
        - Multimetr nastavíme na měření odporu (Ω) nebo akustickou zkoušku kontinuity.
-       - Identifikujeme svorky relé podle dokumentace PLC:
+       - **Identifikujeme svorky relé podle dokumentace PLC:**
        - COM – společný kontakt.
        - NO – normálně rozepnutý kontakt.
        - NC – normálně sepnutý kontakt.
@@ -289,11 +289,63 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
        - Pokud je mezi COM a NO naměřen téměř nulový odpor, může jít o svařené kontakty.
        - 
      - **C. Diagnostika napájecího zdroje a napájení PLC (ověření správného napětí 24 V DC):**
-	   - *Postup:* `...` *(zařízení pod napětím, měření stejnosměrného napětí – hroty na svorkách zdroje / PLC napájení +24 V a 0 V, vhodný rozsah DC napětí, kontrola ripple/stability)*
+	   - *Postup:*
+     - Zkontrolujeme vizuální stav napájecího zdroje, vodičů a svorek.
+     - Ověříme označení svorek +24 V DC a 0 V (GND).
+     - Multimetr nastavíme na měření stejnosměrného napětí (V DC), rozsah 200 V nebo automatický rozsah.
+     - Černý měřicí hrot připojíme na svorku 0 V (GND).
+     - Červený měřicí hrot připojíme na svorku +24 V DC.
+     - Odečteme naměřenou hodnotu napětí.
+     - Stejným způsobem ověříme napětí přímo na napájecích svorkách PLC.
+     - **Vyhodnocení naměřené hodnoty:**
+     - Přibližně 24 V DC – napájení pravděpodobně v pořádku (nutné porovnat s tolerancí výrobce).
+     - Výrazně nižší napětí – možné přetížení zdroje, závada nebo úbytek napětí na vedení.
+     - 0 V – chybějící napájení, vypnutý zdroj nebo přerušené vedení.
+     - Kolísající napětí – možná nestabilita zdroje nebo přetížení.
+     - Kontrolu zvlnění (ripple) provedeme vhodným měřicím přístrojem a funkcí podle dokumentace výrobce zdroje. *(zařízení pod napětím, měření stejnosměrného napětí – hroty na svorkách zdroje / PLC napájení +24 V a 0 V, vhodný rozsah DC napětí, kontrola ripple/stability)*
 	- **D. Diagnostika vstupů a výstupů PLC (ověření napětí / kontinuity na DI/DO):**
-       - *Postup:* `...` *(podle typu – měření napětí na aktivovaném vstupu/výstupu nebo kontinuity/impedance při vypnutém napájení, hroty na příslušných svorkách I/O a referenční GND)*
+       - *Postup:* Podle elektrického schématu identifikujeme příslušné svorky vstupů a výstupů PLC.
+       - Zjistíme typ vstupů a výstupů (PNP, NPN, reléové nebo tranzistorové).
+       - **Měření napětí na digitálních vstupech DI:**
+       - Multimetr nastavíme na měření stejnosměrného napětí (V DC), rozsah 200 V nebo automatický rozsah.
+       - Černý hrot připojíme na referenční svorku 0 V (GND).
+       - Červený hrot připojíme na příslušnou vstupní svorku DI.
+       - Aktivujeme a deaktivujeme příslušný snímač nebo spínač.
+       - Sledujeme změnu napětí na vstupu.
+       - Přibližně 24 V DC – u běžného 24V PNP zapojení odpovídá aktivnímu vstupu.
+       - Přibližně 0 V – u běžného PNP zapojení odpovídá neaktivnímu vstupu.
+       - Hodnoty vždy posuzujeme podle typu zapojení PLC.
+       - **Měření napětí na digitálních výstupech DO:**
+       - Podle dokumentace identifikujeme výstupní svorku a její společný vodič (COM).
+       - Multimetr nastavíme na V DC.
+       - Měříme mezi výstupní svorkou a odpovídající referenční svorkou.
+       - Sledujeme napětí při aktivaci a deaktivaci výstupu v programu PLC.
+       - Naměřené hodnoty porovnáme s očekávaným stavem výstupu a typem jeho zapojení.
+       - **Kontrola kontinuity vodičů:**
+       - Vypneme a zajistíme napájení testovaného obvodu.
+       - Ověříme nepřítomnost napětí vhodným měřicím přístrojem.
+       - Měřený vodič podle potřeby odpojíme od obvodu.
+       - Multimetr nastavíme na měření odporu (Ω), případně akustickou zkoušku kontinuity.
+       - Jeden hrot připojíme na jeden konec vodiče a druhý hrot na jeho druhý konec.
+       - Nízký odpor – vodič je pravděpodobně průchozí.
+       - OL nebo velmi vysoký odpor – pravděpodobně přerušený vodič.
+       - Kontinuitu nikdy neměříme na obvodu pod napětím. *(podle typu – měření napětí na aktivovaném vstupu/výstupu nebo kontinuity/impedance při vypnutém napájení, hroty na příslušných svorkách I/O a referenční GND)*
     - **E. Měření napětí 230 V AC pomocí DC rozsahu (!!! Tento úkol provádějte pouze s vyučujícím !!!):**
-	   - *Postup:* `...` *(zařízení pod napětím, multimetr nastaven na rozsah **1000 V DC**, hroty bezpečně připojeny na fázový a nulový vodič / L–N. Multimetr měří střední hodnotu, proto ukáže přibližně **0 V**.)*
+	   - *Postup:* Vysvětlíme rozdíl mezi měřením střídavého (AC) a stejnosměrného (DC) napětí.
+     - Zkontrolujeme stav multimetru, měřicích kabelů a jejich izolace.
+     - Černý měřicí kabel zapojíme do zdířky COM.
+     - Červený měřicí kabel zapojíme do zdířky V.
+     - Multimetr nastavíme na měření stejnosměrného napětí (V DC), vhodný rozsah nad 230 V.
+     - **Praktické připojení k síťovému napětí smí provádět pouze kvalifikovaná osoba nebo žák pod bezprostředním dohledem vyučujícího na schváleném pracovišti.**
+     - Pro ověření síťového napětí použijeme správnou funkci V AC a odpovídající měřicí přístroj.
+     - Vysvětlíme, že multimetr nastavený na DC může u sinusového střídavého napětí ukázat hodnotu blízkou 0 V.
+     - Důvodem je přibližně nulová střední hodnota sinusového střídavého napětí.
+     - **Jaké riziko z toho vyplývá při následné práci na zařízení:**
+     - Naměřených přibližně 0 V může vyvolat falešný pocit, že zařízení není pod napětím.
+     - Na vodičích přitom může být stále nebezpečných 230 V AC
+     - Může dojít k úrazu elektrickým proudem, popálení nebo smrti.
+     - Nesprávně zvolený rozsah či nevhodný přístroj může způsobit jeho poškození.
+     - Před zahájením práce musíme zařízení bezpečně odpojit, zajistit proti opětovnému zapnutí a ověřit nepřítomnost napětí vhodnou dvoupólovou zkoušečkou. *(zařízení pod napětím, multimetr nastaven na rozsah **1000 V DC**, hroty bezpečně připojeny na fázový a nulový vodič / L–N. Multimetr měří střední hodnotu, proto ukáže přibližně **0 V**.)*
 	   - *Jaké riziko z toho vyplývá při následné práci na zařízení:* `...`
 
 3. **Diagnostika v programovacím prostředí Teco Mosaic:**
