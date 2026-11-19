@@ -9,7 +9,7 @@ $${\color{#FFA500}E10 \space \color{Gold}S21 \space \color{#4682B4}A5}$$
 - **Kategorizovat a porovnat** programovatelné automaty (PLC) podle aplikační oblasti, konstrukčního provedení (kompaktní, modulární na DIN lištu, distribuované I/O ostrovy) a odlišit je od embedded PLC, iPC, NC a mikrokontrolérů (MCU).
 - **Analyzovat vnitřní hardwarovou architekturu PLC** (CPU, paměťové oblasti Flash/RAM/Retain, procesní obraz vstupů a výstupů PAE/PAA, sběrnice) na bázi ekosystému **Tecomat Foxtrot / TC800** a navrhnout dimenzování napájení a ochranu výstupních obvodů.
 - **Sestavit a navrhnout** funkční hardwarovou konfiguraci modulárního PLC z reálných katalogů a technické dokumentace firmy **Teco a.s.** (včetně rozšiřujících modulů DI/DO/AI/AO a komunikačních linek TCL2 / CIB) na základě technologické I/O bilance s uvážením projektové rezervy.
-- **Provést systematickou diagnostiku a troubleshooting** logického automatu s využitím provozních LED indikátorů, měřicích postupů digitálním multimetrem i softwarových nástrojů vývojového prostředí **Teco Mosaic** (Inspektor, Watch, Force, systémový log).
+- **Provést systematickou diagnostiku a troubleshooting** logického automatu s využitím provozních LED indikátorů, měřicích postupů digitálním multimetrem i softwarových nástrojů vývojového prostředí **Teco Mosaic** (Inspektor, h, Force, systémový log).
 - **Implementovat a optimalizovat** řídicí algoritmus v normovaných jazycích dle **ČSN EN 61131-3** v prostředí Mosaic (**ST – Strukturovaný text** se stavovým automatem a **LD – Liniové schéma**) s aplikací standardních funkčních bloků časovačů (TON, TOF).
 - **Zhodnotit a obhájit** volbu řídicího systému z hlediska celkových nákladů na vlastnictví (**TCO**), životního cyklu, dlouhodobé dostupnosti servisu a zásad funkční bezpečnosti (**Safety**).
 
@@ -350,13 +350,13 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
 
 3. **Diagnostika v programovacím prostředí Teco Mosaic:**
    - K jakému diagnostickému účelu slouží níže uvedené nástroje prostředí Mosaic a jaká jsou jejich bezpečnostní rizika:
-     - **Nástroj Watch / Sledování proměnných (Inspektor):**
-       - *Účel:* `...`
+     - **Nástroj h / Sledování proměnných (Inspektor):**
+       - *Účel:* `Slouží k sledování aktuálních hodnot proměnných PLC během běhu programu`
      - **Funkce Force (Vnucení hodnoty vstupu / výstupu):**
-       - *Co přesně funkce provede:* `...`
-       - :warning: **Provozní a bezpečnostní riziko funkce Force:** Proč je použití funkce Force během ostrého provozu s přítomností lidské obsluhy zakázáno? `...`
+       - *Co přesně funkce provede:* `Umožňuje násilně nastavit zvolenou hodnotu proměnné bez ohledu na její běžné řízení programem`
+       - :warning: **Provozní a bezpečnostní riziko funkce Force:** Proč je použití funkce Force během ostrého provozu s přítomností lidské obsluhy zakázáno? `Protože může obejít běžné řízení technologie.`
      - **Systémový diagnostický log (Chybový protokol PLC v Mosaicu):**
-       - *Jaké informace v něm technik vyčte:* `...` *(např. restart CPU, výpadek sběrnice TCL2, chyba dělení nulou)*
+       - *Jaké informace v něm technik vyčte:* `Restart CPU nebo zastavení PLC. Výpadek či poruchu komunikační sběrnice TCL2. Chyby programu. Chybové kódy a informace o poruchách hardwaru. Informace potřebné k určení příčiny poruchy a jejího odstranění.` *(např. restart CPU, výpadek sběrnice TCL2, chyba dělení nulou)*
 
 > **Kritéria hodnocení úlohy 4 (bodování na známky):**
 > - :bangbang: **Odborná správnost interpretace stavů a hlášení PLC (30 %):** Bezchybné vysvětlení indikace LED (RUN, HALT, ERR) a práce s diagnostickým hlášením v prostředí Mosaic.
@@ -456,7 +456,7 @@ END_VAR
 // 4. Řízení výstupu čerpadla přes časovač TOF (zpoždění vypnutí 10 s):
 timer_TOF(IN := ..., PT := T#10s);
 do_Cerpadlo := timer_TOF.Q AND ...;
-
+a
 // 5. Aktivace alarmu:
 do_Alarm := ...;
 
@@ -471,7 +471,7 @@ END_PROGRAM
 
 3. **Ověření chování programu v simulátoru Mosaic (protokol o simulaci):**
 
-   Po spuštění simulace v Mosaicu ověřte chování programu. Popište nebo doplňte očekávané hodnoty proměnných v okně **Watch** pro každý testovací scénář:
+   Po spuštění simulace v Mosaicu ověřte chování programu. Popište nebo doplňte očekávané hodnoty proměnných v okně **h** pro každý testovací scénář:
 
    | Testovací scénář | Vstupní podmínky (hodnoty v simulátoru) | Očekávaný stav výstupů | Skutečně naměřeno v simulátoru |
    | :--- | :--- | :--- | :--- |
@@ -485,22 +485,22 @@ END_PROGRAM
 4. **Propojení teorie s výsledky simulace:**
    - Proč proměnná `b_HavarieDetekce` musí být deklarována jako `RETAIN`? Co by se stalo při výpadku napájení PLC, kdyby nebyla uložena v remanentní paměti?
      - *Vaše odpověď:* `...`
-   - Sledujte v okně Watch hodnotu `timer_TOF.ET` (elapsed time) během odpočtu 10 sekund. K čemu slouží tato hodnota z pohledu diagnostiky v praxi?
+   - Sledujte v okně h hodnotu `timer_TOF.ET` (elapsed time) během odpočtu 10 sekund. K čemu slouží tato hodnota z pohledu diagnostiky v praxi?
      - *Vaše odpověď:* `...`
    - Jakým způsobem byste pomocí funkce **Force** v Mosaicu nasimulovali výpadek ochrany motoru (`di_Porucha = FALSE`) bez fyzického přepojení svorky? Popište postup a uveďte bezpečnostní riziko:
      - *Postup Force:* `...`
      - *Bezpečnostní riziko při použití Force v ostrém provozu:* `...`
 
 > **Kritéria hodnocení úlohy 5 (bodování na známky):**
-> - :bangbang: **Správný postup práce v simulátoru Mosaic (25 %):** Správně popsané kroky pro aktivaci simulátoru, přiřazení I/O a spuštění online monitoringu (Watch).
+> - :bangbang: **Správný postup práce v simulátoru Mosaic (25 %):** Správně popsané kroky pro aktivaci simulátoru, přiřazení I/O a spuštění online monitoringu (h).
 > - :bangbang: **Správnost implementace algoritmu v jazyce ST (45 %):** Správná logika podmínek, správné použití časovače `TOF` (vstup `IN`, výstup `Q`, parametr `PT`), deklarace `RETAIN` proměnné, ošetření všech poruchových stavů.
-> - :bangbang: **Protokol o simulaci – propojení teorie a praxe (30 %):** Správně vyplněné výsledky sledování ve Watch okně, věcné zdůvodnění role RETAIN paměti a bezpečnostního rizika funkce Force.
+> - :bangbang: **Protokol o simulaci – propojení teorie a praxe (30 %):** Správně vyplněné výsledky sledování ve h okně, věcné zdůvodnění role RETAIN paměti a bezpečnostního rizika funkce Force.
 
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **Simulátor Teco Mosaic:** Integrovaný software Mosaicu, který plně emuluje cyklický běh procesorové jednotky Foxtrot včetně odpočtu časovačů, práce s procesním obrazem a remanentní pamětí – bez nutnosti připojení fyzického PLC. Student tak může odladit celý program ještě před nasazením na skutečné zařízení.
 > - **TOF (Timer Off-Delay / Časovač se zpožděním vypnutí):** Standardní funkční blok dle IEC 61131-3. Výstup `Q` je aktivní po celou dobu aktivního vstupu `IN`. Po deaktivaci `IN` zůstane `Q` aktivní ještě po dobu nastavenou v `PT`. Použití: zabránění krátkodobým cyklickým startům motorů (ochrana před taktováním čerpadla).
 > - **RETAIN (Remanentní proměnná):** Proměnná uložená v části paměti PLC (FRAM, zálohovaná RAM nebo superkondenzátorem), jejíž hodnota přežije výpadek napájení a je dostupná ihned po opětovném startu automatu. Typické použití: počítadla kusů, příznaky havárie, nastaveníparametrů procesu.
-> - **Watch / Inspektor v Mosaicu:** Okno online monitoringu proměnných. Zobrazuje aktuální hodnotu libovolné proměnné programu v každém skenu PLC. Neovlivňuje chod programu – slouží pouze ke čtení.
+> - **h / Inspektor v Mosaicu:** Okno online monitoringu proměnných. Zobrazuje aktuální hodnotu libovolné proměnné programu v každém skenu PLC. Neovlivňuje chod programu – slouží pouze ke čtení.
 > - **Force (Vnucení hodnoty):** Diagnostický nástroj, který natvrdo uzamkne hodnotu proměnné v procesním obrazu na zvolenou hodnotu, nezávisle na fyzickém stavu svorky ani na algoritmu programu. V simulátoru bezpečně nahrazuje fyzické přepojení vstupní svorky.
 >
 > *Bibliografické citace:*
