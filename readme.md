@@ -445,28 +445,35 @@ END_VAR
 // === Doplňte implementaci logiky níže ===
 
 // 1. Reset havarijního příznaku operátorem:
-...
+IF btn_Reset THEN
+    b_HavarieDetekce := FALSE;
+END_IF;
 
 // 2. Detekce havarijního přepadu nebo poruchy motoru:
-...
+IF NOT di_HladinaHavar OR NOT di_Porucha THEN
+    b_HavarieDetekce := TRUE;
+END_IF;
 
 // 3. Podmínka pro spuštění čerpadla (všechny podmínky splněny):
-...
+// Spodní hladina OK, zapínací hladina dosažena,
+// bez havarijního přepadu, motor bez poruchy a bez alarmu.
 
-// 4. Řízení výstupu čerpadla přes časovač TOF (zpoždění vypnutí 10 s):
-timer_TOF(IN := ..., PT := T#10s);
-do_Cerpadlo := timer_TOF.Q AND ...;
-a
+timer_TOF(
+    IN := di_HladinaDolni
+          AND di_HladinaPump
+          AND NOT di_HladinaHavar
+          AND di_Porucha
+          AND NOT b_HavarieDetekce,
+    PT := T#10s
+);
+
+// 4. Řízení výstupu čerpadla přes časovač TOF:
+do_Cerpadlo := timer_TOF.Q;
+
 // 5. Aktivace alarmu:
-do_Alarm := ...;
+do_Alarm := b_HavarieDetekce;
 
 END_PROGRAM
-```
-
-   - *Váš doplněný kód v ST:*
-```pascal
-// Vložte váš kompletní program:
-...
 ```
 
 3. **Ověření chování programu v simulátoru Mosaic (protokol o simulaci):**
