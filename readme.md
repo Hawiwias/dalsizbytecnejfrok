@@ -428,50 +428,73 @@ Naprogramujte a simulujte v prostředí Teco Mosaic řízení jednoduché **čer
    Napište program pro výše popsanou logiku čerpací stanice. Použijte strukturu s remanentní proměnnou a časovačem `TOF`. Vzorová kostra programu:
 
 ```pascal
+
 PROGRAM Prg_CerpStation
 VAR
-    di_HladinaDolni  : BOOL; // NC plovák – spodní hladina (log.1 = OK)
+    di_HladinaDolni  : BOOL; // NC plovák – spodní hladina
     di_HladinaPump   : BOOL; // NO plovák – zapínací hladina
     di_HladinaHavar  : BOOL; // NO plovák – havarijní prepad
-    di_Porucha       : BOOL; // NC termistor (log.1 = bez poruchy)
-    btn_Reset        : BOOL; // Rucní reset alarmu operátorem
-    do_Cerpadlo      : BOOL; // Výstup stykace cerpadla
-    do_Alarm         : BOOL; // Výstup majáku / sirény
+    di_Porucha       : BOOL; // NC termistor – 1 = bez poruchy
 
+    btn_Reset        : BOOL; // Rucní reset alarmu
 
-    timer_TOF        : TOF;  // Zpoždení vypnutí cerpadla (10 s)
-    b_StartCond      : BOOL; // Podmínka spuštení cerpadla
-    b_HavarieAktivni : BOOL; // Aktuální havárie / porucha
+    do_Cerpadlo      : BOOL;
+    do_Alarm         : BOOL;
+
+    timer_TOF        : TOF;
+
+    b_StartCond      : BOOL;
+    b_HavarieAktivni : BOOL;
 END_VAR
 
 VAR RETAIN
-    b_HavarieDetekce : BOOL; // Prežije výpadek napájení
+    b_HavarieDetekce : BOOL := FALSE;
 END_VAR
 
+
+// 1. Detekce aktuální havárie
 b_HavarieAktivni := di_HladinaHavar OR NOT di_Porucha;
 
+
+// 2. Zapamatování havárie a její reset
 IF b_HavarieAktivni THEN
-   b_HavarieAktivni := TRUE;
+
+    // Pri havárii vždy uložit alarm
+    b_HavarieDetekce := TRUE;
+
 ELSIF btn_Reset THEN
-   b_HavarieDetekce := FALSE;
+
+    // Reset je možný pouze bez aktivní havárie
+    b_HavarieDetekce := FALSE;
+
 END_IF;
 
-// 3. Podmínka pro spuštení cerpadla
-b_StartCond := di_HladinaDolni
-               AND di_HladinaPump
-               AND NOT di_HladinaHavar
-               AND di_Porucha
-               AND NOT b_HavarieDetekce;
 
-// 4. Rízení výstupu cerpadla pres TOF (dobeh 10 s po zrušení podmínky)
-// Pri havárii/poruše se cerpadlo vypne okamžite (bez dobehu).
-timer_TOF(IN := b_StartCond, PT := T#10s);
-do_Cerpadlo := timer_TOF.Q
-               AND di_HladinaDolni
-               AND di_Porucha
-               AND NOT b_HavarieDetekce;
+// 3. Podmínka spuštení cerpadla
+b_StartCond :=
+    di_HladinaDolni
+    AND di_HladinaPump
+    AND NOT di_HladinaHavar
+    AND di_Porucha
+    AND NOT b_HavarieDetekce;
 
-// 5. Aktivace alarmu
+
+// 4. Casové zpoždení vypnutí
+timer_TOF(
+    IN := b_StartCond,
+    PT := T#10s
+);
+
+
+// 5. Výstup cerpadla
+do_Cerpadlo :=
+    timer_TOF.Q
+    AND di_HladinaDolni
+    AND di_Porucha
+    AND NOT b_HavarieDetekce;
+
+
+// 6. Výstup alarmu
 do_Alarm := b_HavarieDetekce;
 
 END_PROGRAM
