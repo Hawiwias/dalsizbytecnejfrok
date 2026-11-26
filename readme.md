@@ -432,48 +432,50 @@ PROGRAM Prg_CerpStation
 VAR
     di_HladinaDolni  : BOOL; // NC plovák – spodní hladina (log.1 = OK)
     di_HladinaPump   : BOOL; // NO plovák – zapínací hladina
-    di_HladinaHavar  : BOOL; // NO plovák – havarijní přepad
+    di_HladinaHavar  : BOOL; // NO plovák – havarijní prepad
     di_Porucha       : BOOL; // NC termistor (log.1 = bez poruchy)
-    btn_Reset        : BOOL; // Ruční reset alarmu operátorem
-    do_Cerpadlo      : BOOL; // Výstup stykače čerpadla
+    btn_Reset        : BOOL; // Rucní reset alarmu operátorem
+    do_Cerpadlo      : BOOL; // Výstup stykace cerpadla
     do_Alarm         : BOOL; // Výstup majáku / sirény
 
-    b_HavarieDetekce : BOOL; // RETAIN – příznak havárie přepadu (přežije výpadek)
-    timer_TOF        : TOF;  // Zpoždění vypnutí čerpadla (10 s)
+
+    timer_TOF        : TOF;  // Zpoždení vypnutí cerpadla (10 s)
+    b_StartCond      : BOOL; // Podmínka spuštení cerpadla
+    b_HavarieAktivni : BOOL; // Aktuální havárie / porucha
 END_VAR
 
-// === Doplňte implementaci logiky níže ===
+VAR RETAIN
+    b_HavarieDetekce : BOOL; // Prežije výpadek napájení
+END_VAR
 
-// 1. Reset havarijního příznaku operátorem:
-IF btn_Reset THEN
-    b_HavarieDetekce := FALSE;
+b_HavarieAktivni := di_HladinaHavar OR NOT di_Porucha;
+
+IF b_HavarieAktivni THEN
+   b_HavarieAktivni := TRUE;
+ELSIF btn_Reset THEN
+   b_HavarieDetekce := FALSE;
 END_IF;
 
-// 2. Detekce havarijního přepadu nebo poruchy motoru:
-IF NOT di_HladinaHavar OR NOT di_Porucha THEN
-    b_HavarieDetekce := TRUE;
-END_IF;
+// 3. Podmínka pro spuštení cerpadla
+b_StartCond := di_HladinaDolni
+               AND di_HladinaPump
+               AND NOT di_HladinaHavar
+               AND di_Porucha
+               AND NOT b_HavarieDetekce;
 
-// 3. Podmínka pro spuštění čerpadla (všechny podmínky splněny):
-// Spodní hladina OK, zapínací hladina dosažena,
-// bez havarijního přepadu, motor bez poruchy a bez alarmu.
+// 4. Rízení výstupu cerpadla pres TOF (dobeh 10 s po zrušení podmínky)
+// Pri havárii/poruše se cerpadlo vypne okamžite (bez dobehu).
+timer_TOF(IN := b_StartCond, PT := T#10s);
+do_Cerpadlo := timer_TOF.Q
+               AND di_HladinaDolni
+               AND di_Porucha
+               AND NOT b_HavarieDetekce;
 
-timer_TOF(
-    IN := di_HladinaDolni
-          AND di_HladinaPump
-          AND NOT di_HladinaHavar
-          AND di_Porucha
-          AND NOT b_HavarieDetekce,
-    PT := T#10s
-);
-
-// 4. Řízení výstupu čerpadla přes časovač TOF:
-do_Cerpadlo := timer_TOF.Q;
-
-// 5. Aktivace alarmu:
+// 5. Aktivace alarmu
 do_Alarm := b_HavarieDetekce;
 
 END_PROGRAM
+
 ```
 
 3. **Ověření chování programu v simulátoru Mosaic (protokol o simulaci):**
@@ -482,11 +484,11 @@ END_PROGRAM
 
    | Testovací scénář | Vstupní podmínky (hodnoty v simulátoru) | Očekávaný stav výstupů | Skutečně naměřeno v simulátoru |
    | :--- | :--- | :--- | :--- |
-   | **Normální jímání – hladina roste** | `di_HladinaDolni=1`, `di_HladinaPump=0`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=0`, `do_Alarm=0` | `...` |
-   | **Spuštění čerpadla** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=1`, `do_Alarm=0` | `...` |
+   | **Normální jímání – hladina roste** | `di_HladinaDolni=1`, `di_HladinaPump=0`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=0`, `do_Alarm=0` | `do_Cerpadlo=0 do_Alarm=0` |
+   | **Spuštění čerpadla** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=1`, `do_Alarm=0` | `do_Cerpadlo=1 do_Alarm=0` |
    | **Vyprázdnění – čekání TOF** | `di_HladinaDolni=1`, `di_HladinaPump=0 (právě klesl)`, vše ostatní OK | `do_Cerpadlo=1` *(ještě běží 10 s TOF)*, `timer_TOF.ET` roste | `...` |
-   | **Havarijní přepad** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_HladinaHavar=1`, `di_Porucha=1` | `do_Alarm=1`, `b_HavarieDetekce=1` | `...` |
-   | **Porucha motoru (termistorové relé)** | `di_HladinaPump=1`, **`di_Porucha=0`** | `do_Cerpadlo=0`, `do_Alarm=1` | `...` |
+   | **Havarijní přepad** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_HladinaHavar=1`, `di_Porucha=1` | `do_Alarm=1`, `b_HavarieDetekce=1` | `do_Alarm=1 b_HavarieDetekce=1` |
+   | **Porucha motoru (termistorové relé)** | `di_HladinaPump=1`, **`di_Porucha=0`** | `do_Cerpadlo=0`, `do_Alarm=1` | `do_Cerpadlo=0 do_Alarm=1` |
    | **Reset alarmu** | Po stisku `btn_Reset`, porucha i přepad odstraněny | `do_Alarm=0`, `b_HavarieDetekce=0` | `...` |
 
 4. **Propojení teorie s výsledky simulace:**
